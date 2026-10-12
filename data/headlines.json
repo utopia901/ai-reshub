@@ -1,0 +1,66 @@
+[
+ {
+  "id": "20260503-reward-hacking-benchmark",
+  "text": "Reward-hacking benchmark: exploit rates across 13 frontier agents ran from 0% to 13.9%; RL-heavy models hacked more",
+  "url": "https://arxiv.org/abs/2605.02964",
+  "tier": "T2",
+  "date": "2026-05-03",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261007-claude-haiku-5-5",
+  "text": "🧪 New model: Anthropic released Claude Haiku 5.5, its cheapest and fastest small model (Oct 7)",
+  "url": "https://www.anthropic.com/claude-haiku-5-5",
+  "tier": "T1",
+  "date": "2026-10-07",
+  "benchmark_flag": true
+ },
+ {
+  "id": "20261010-contextecho",
+  "text": "Persona drift is widespread across model organizations; single-shot anchors can restore identity in long sessions.",
+  "url": "https://arxiv.org/abs/2605.24279",
+  "tier": "T2",
+  "date": "2026-10-10",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261010-envelope-sampling",
+  "text": "Cheap LLM judges in post-training drive sycophancy; envelope sampling offers practical mitigation for training honesty at scale.",
+  "url": "https://arxiv.org/abs/2610.11281",
+  "tier": "T2",
+  "date": "2026-10-10",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261010-memory-gates-sycophancy",
+  "text": "Memory gate routing outperforms activation steering for long-context sycophancy",
+  "url": "https://arxiv.org/abs/2610.07403",
+  "tier": "T1",
+  "date": "2026-10-05",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261010-persona-hierarchy",
+  "text": "Personas act as unified bottleneck for behavior generalization; implications for understanding scope of system prompt control.",
+  "url": "https://arxiv.org/abs/2610.09384",
+  "tier": "T2",
+  "date": "2026-10-10",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261010-reasoning-tokens-honesty",
+  "text": "Truthful reasoning requires fewer tokens than false or indifferent responding",
+  "url": "https://arxiv.org/abs/2610.10405",
+  "tier": "T2",
+  "date": "2026-10-07",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261010-sycophancy-attention-steering",
+  "text": "Self-guided attention steering reduces LLM sycophancy 18.8pp without accuracy loss",
+  "url": "https://arxiv.org/abs/2610.04329",
+  "tier": "T2",
+  "date": "2026-10-03",
+  "benchmark_flag": false
+ }
+]

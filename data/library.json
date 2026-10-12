@@ -1,0 +1,386 @@
+[
+ {
+  "id": "cocola-2026-story-imprinting",
+  "title": "Story Imprinting: AI Assistants Absorb Traits from Human Characters They Resemble",
+  "authors": "Cocola et al.",
+  "org": "Truthful AI (with Harvard University, University of Oxford, METR)",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2609.10883",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Shows how an assistant persona absorbs traits from fiction it is trained on, a direct look at persona emergence. (our take)"
+ },
+ {
+  "id": "ding-2026-contextecho",
+  "title": "ContextEcho: A Benchmark for Persona Drift in Long Agentic-Coding Sessions",
+  "authors": "Ding et al.",
+  "org": "?",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2605.24279",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Quantifies persona drift at scale across different model organizations and shows reset mechanisms fail, a critical empirical finding for understanding stability. (our take)"
+ },
+ {
+  "id": "f01-attention",
+  "title": "Attention Is All You Need",
+  "authors": "Vaswani et al.",
+  "org": "Google",
+  "year": "2017",
+  "url": "https://arxiv.org/abs/1706.03762",
+  "tier": "T1",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "Introduced the transformer, the architecture every model we study runs on."
+ },
+ {
+  "id": "f02-scaling",
+  "title": "Scaling Laws for Neural Language Models",
+  "authors": "Kaplan et al.",
+  "org": "OpenAI",
+  "year": "2020",
+  "url": "https://arxiv.org/abs/2001.08361",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": true,
+  "why": "Found: loss falls as a predictable power law in size, data and compute. Our take: the bet behind the scale-up."
+ },
+ {
+  "id": "f03-gpt3",
+  "title": "Language Models are Few-Shot Learners (GPT-3)",
+  "authors": "Brown et al.",
+  "org": "OpenAI",
+  "year": "2020",
+  "url": "https://arxiv.org/abs/2005.14165",
+  "tier": "T1",
+  "topics": [
+   "scaffolding"
+  ],
+  "is_fundamental": true,
+  "why": "Found: in-context learning from examples in the prompt. Our take: where prompting as a craft starts."
+ },
+ {
+  "id": "f04-instructgpt",
+  "title": "Training language models to follow instructions with human feedback (InstructGPT)",
+  "authors": "Ouyang et al.",
+  "org": "OpenAI",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2203.02155",
+  "tier": "T1",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "The RLHF recipe behind ChatGPT-style assistants. Our inference: the training loop later sycophancy research points to."
+ },
+ {
+  "id": "f05-cai",
+  "title": "Constitutional AI: Harmlessness from AI Feedback",
+  "authors": "Bai et al.",
+  "org": "Anthropic",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2212.08073",
+  "tier": "T2",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "Training against written principles instead of only human ratings. Our take: an early form of the 'spec' idea."
+ },
+ {
+  "id": "f06-cot",
+  "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+  "authors": "Wei et al.",
+  "org": "Google",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2201.11903",
+  "tier": "T1",
+  "topics": [
+   "scaffolding"
+  ],
+  "is_fundamental": true,
+  "why": "'Show your work' prompting. Our take: led to reasoning models and the faithfulness question."
+ },
+ {
+  "id": "f07-react",
+  "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+  "authors": "Yao et al.",
+  "org": "Princeton / Google",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2210.03629",
+  "tier": "T1",
+  "topics": [
+   "agents",
+   "scaffolding"
+  ],
+  "is_fundamental": true,
+  "why": "The think, act, observe loop behind most agent scaffolding, Lisa OS included."
+ },
+ {
+  "id": "f08-truthfulqa",
+  "title": "TruthfulQA: Measuring How Models Mimic Human Falsehoods",
+  "authors": "Lin, Hilton & Evans",
+  "org": "Oxford / OpenAI",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2109.07958",
+  "tier": "T1",
+  "topics": [
+   "honesty"
+  ],
+  "is_fundamental": true,
+  "why": "Found: the largest models were generally the least truthful. Our take: early evidence that capability isn't honesty."
+ },
+ {
+  "id": "f09-turpin",
+  "title": "Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting",
+  "authors": "Turpin et al.",
+  "org": "NYU / Anthropic",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2305.04388",
+  "tier": "T1",
+  "topics": [
+   "honesty"
+  ],
+  "is_fundamental": true,
+  "why": "Found: CoT explanations can systematically misrepresent the true reason for a prediction."
+ },
+ {
+  "id": "f10-perez",
+  "title": "Discovering Language Model Behaviors with Model-Written Evaluations",
+  "authors": "Perez et al.",
+  "org": "Anthropic",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2212.09251",
+  "tier": "T1",
+  "topics": [
+   "honesty",
+   "trends"
+  ],
+  "is_fundamental": true,
+  "why": "Found: sycophancy worsens with model size; separately, more RLHF made some behaviors worse."
+ },
+ {
+  "id": "f11-circuits",
+  "title": "A Mathematical Framework for Transformer Circuits",
+  "authors": "Elhage et al.",
+  "org": "Anthropic",
+  "year": "2021",
+  "url": "https://transformer-circuits.pub/2021/framework/index.html",
+  "tier": "T2",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "The starting map for mechanistic interpretability: reading what attention layers compute."
+ },
+ {
+  "id": "f12-superposition",
+  "title": "Toy Models of Superposition",
+  "authors": "Elhage et al.",
+  "org": "Anthropic",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2209.10652",
+  "tier": "T2",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "Models pack more features than neurons, so one neuron isn't one concept. Why later work turned to sparse autoencoders."
+ },
+ {
+  "id": "f13-concrete",
+  "title": "Concrete Problems in AI Safety",
+  "authors": "Amodei et al.",
+  "org": "Google Brain / OpenAI / Stanford / Berkeley",
+  "year": "2016",
+  "url": "https://arxiv.org/abs/1606.06565",
+  "tier": "T2",
+  "topics": [
+   "hood"
+  ],
+  "is_fundamental": true,
+  "why": "Found: names side effects and reward hacking as core problems. The METR and Baker work picks this up."
+ },
+ {
+  "id": "f14-genagents",
+  "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+  "authors": "Park et al.",
+  "org": "Stanford / Google",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2304.03442",
+  "tier": "T1",
+  "topics": [
+   "agents",
+   "trends"
+  ],
+  "is_fundamental": true,
+  "why": "Found: 25 agents with memory and reflection showed unscripted social behavior. Our take: cousin to Raf's persona-emergence work."
+ },
+ {
+  "id": "f15-emergence",
+  "title": "Emergent Abilities of LLMs (Wei 2022) + Are Emergent Abilities of LLMs a Mirage? (Schaeffer 2023)",
+  "authors": "Wei et al. / Schaeffer et al.",
+  "org": "Google / Stanford",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2304.15004",
+  "tier": "T1",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": true,
+  "why": "The claim and its rebuttal: apparent emergence may come from the choice of metric. Wei: arxiv.org/abs/2206.07682"
+ },
+ {
+  "id": "gema-2026-cot-cue-channel",
+  "title": "Chain-of-Thought Faithfulness of Reasoning Models Varies with Where and How Preference Cues Are Delivered",
+  "authors": "Gema et al.",
+  "org": "University of Edinburgh",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2608.29464",
+  "tier": "T2",
+  "topics": [
+   "honesty",
+   "agents"
+  ],
+  "is_fundamental": false,
+  "why": "Our take: this hits agents directly, because agents take in most of their information through tool returns. If CoT goes quiet exactly there, monitoring by reading the reasoning has a blind spot."
+ },
+ {
+  "id": "he-2026-suppressing-pressure",
+  "title": "Suppressing Pressure, Amplifying Evidence: Self-Guided Attention Steering to Mitigate Sycophancy and Stubbornness",
+  "authors": "He et al.",
+  "org": "Purdue University / The Ohio State University / Analogy AI Inc. / The Chinese University of Hong Kong, Shenzhen / Northwestern University",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2610.04329",
+  "tier": "T2",
+  "topics": [
+   "honesty"
+  ],
+  "is_fundamental": false,
+  "why": "Direct evidence that models can be steered to resist sycophancy without trade-off to accuracy, using only the model's own reasoning. Raf would care because it shows a concrete mechanism for catching sycophancy during inference."
+ },
+ {
+  "id": "hoffmann-2022-chinchilla",
+  "title": "Training Compute-Optimal Large Language Models (\"Chinchilla\")",
+  "authors": "Hoffmann et al.",
+  "org": "DeepMind",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2203.15556",
+  "tier": "T2",
+  "topics": [
+   "trends",
+   "hood"
+  ],
+  "is_fundamental": false,
+  "why": "Refines the Kaplan scaling laws already on your Fundamentals shelf: model size and training tokens should grow together. This is why later models trained on far more data."
+ },
+ {
+  "id": "leins-2026-persona-drift-prompting",
+  "title": "Prompting Against Persona Drift: Comparing Intervention Timing and Content in LLM-Simulated Conversations",
+  "authors": "Leins et al.",
+  "org": "Zuse Institute Berlin / TU Berlin / Weizenbaum Institute",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2609.24532",
+  "tier": "T2",
+  "topics": [
+   "scaffolding"
+  ],
+  "is_fundamental": false,
+  "why": "Our take: practical evidence on how to keep a system prompt in force over long conversations. The finding that what you re-inject matters more than when you do it applies directly to persona and scaffolding work."
+ },
+ {
+  "id": "liu-2026-anthrodial",
+  "title": "AnthroDial: Benchmarking LLM Anthropomorphism in Autonomous Social Interaction",
+  "authors": "Liu et al.",
+  "org": "?",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2609.37853",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Addresses persona emergence in social interactions by studying how autonomous communication adapts across contexts and relationships. (our take)"
+ },
+ {
+  "id": "peng-2026-masc-counseling",
+  "title": "MASC: A Multi-Agent Self-Calibration Framework with Latent Construct Alignment for Consistent Client Role-Playing in Psychological Counseling",
+  "authors": "Peng et al.",
+  "org": "?",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2610.08250",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Directly targets persona consistency in long dialogue, a core P1 concern. Shows multi-agent refinement reduces drift better than static prompts. (our take)"
+ },
+ {
+  "id": "usama-2026-system-prompt-illusion",
+  "title": "The System Prompt Illusion: How Instruction Preambles Modify Computation in Language Models",
+  "authors": "Usama & Chang",
+  "org": "Korea Advanced Institute of Science and Technology (KAIST)",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2609.38205",
+  "tier": "T2",
+  "topics": [
+   "scaffolding"
+  ],
+  "is_fundamental": false,
+  "why": "This reveals the mechanistic limits of system-prompt scaffolding: models parse safety instructions but don't act on them, while persona prompts reshape computation throughout. Raf would care because it explains why prompt-based safety is fragile and supports the need for training-level controls."
+ },
+ {
+  "id": "young-2026-lie-to-me",
+  "title": "Lie to Me: How Faithful Is Chain-of-Thought Reasoning in Reasoning Models?",
+  "authors": "Young",
+  "org": "University of Nevada, Las Vegas / DeepNeuro AI",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2603.22582",
+  "tier": "T2",
+  "topics": [
+   "honesty",
+   "hood"
+  ],
+  "is_fundamental": false,
+  "why": "Our take: this extends Turpin (on the Fundamentals shelf) to current open reasoning models. The reported gap (hints show up in the thinking tokens but drop out of the final answer) is a concrete faithfulness pattern you could test yourself."
+ },
+ {
+  "id": "zhang-2026-robust-personalized-alignment",
+  "title": "Toward Robust Personalized Alignment for LLMs: Mitigating Persona Drift in Multi-Turn Dialogue",
+  "authors": "Zhang et al.",
+  "org": "Harbin Institute of Technology (Shenzhen) / Peng Cheng Laboratory / Huazhong University of Science and Technology",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2609.12373",
+  "tier": "T1",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Directly addresses persona drift in long-turn dialogue, a core P1 concern. Shows that explicit turn-level vs. persistent-state separation improves robustness beyond memory or generation alone."
+ },
+ {
+  "id": "zhao-2026-persona-hierarchy",
+  "title": "The Persona Hierarchy Model: Understanding Contextual Generalization in Fine-Tuning LLMs",
+  "authors": "Zhao et al.",
+  "org": "?",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2610.09384",
+  "tier": "T2",
+  "topics": [
+   "trends"
+  ],
+  "is_fundamental": false,
+  "why": "Reveals personas act as a bottleneck for generalization, suggesting system-prompt contexts control behavior through a single underlying representation. (our take)"
+ }
+]
