@@ -99,6 +99,24 @@ a.tile:hover,.paper:hover{transform:translateY(-2px);border-color:color-mix(in s
 .tag.fund{background:var(--fg);color:var(--bg)}
 .tag.star{background:linear-gradient(135deg,var(--haze1),var(--haze3));color:#5a4300}
 .tag.held{background:var(--warn-soft);color:var(--warn)}
+.tag.prog{background:var(--accent-soft);color:var(--accent);font-weight:500}
+.tag.done{background:var(--good-soft);color:var(--good);font-weight:500}
+.thumbs{display:inline-flex;gap:6px}
+.thumbs button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 12px;font-size:1.05rem;line-height:1;color:var(--fg)}
+.thumbs button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.thumb-ic{font-size:.95rem}
+.lvlbar{display:inline-flex;gap:2px;align-items:center;text-decoration:none;color:var(--muted)}
+.lvlbar i{display:block;width:8px;height:10px;border-radius:2px;background:var(--line)}
+.lvlbar i.l3,.lvlbar i.l4{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.lvlbar i.l2{background:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.lvlbar i.l1{background:var(--bad-soft)}
+.lvlbar span{margin-left:6px}
+.lv{font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:4px;white-space:nowrap;justify-self:start}
+.lv.l1{background:var(--bad-soft);color:var(--bad)}.lv.l2{background:var(--warn-soft);color:var(--warn)}.lv.l3{background:var(--accent-soft);color:var(--accent)}.lv.l4{background:var(--good-soft);color:var(--good)}
+.concept{display:grid;gap:6px;padding-block:12px;border-top:1px solid var(--line)}
+.concept:first-child{border-top:0;padding-top:0}
+.concept q{color:var(--muted);font-style:italic}
+.sesrow-tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .paper.starred{box-shadow:0 0 0 2px color-mix(in srgb,var(--haze1) 85%,transparent),0 10px 30px -14px color-mix(in srgb,var(--haze3) 80%,transparent)}
 .starnote{margin:0;padding:10px 14px;border-radius:var(--r-sm);background:color-mix(in srgb,var(--haze2) 45%,transparent);font-size:.9rem}
 .lrow{display:grid;grid-template-columns:minmax(0,1fr) 12rem;gap:18px;align-items:center}
@@ -232,7 +250,7 @@ td.num{font-variant-numeric:tabular-nums}
 <script>
 const TOPICS={scaffolding:"Prompting & scaffolding",hood:"Under the hood",honesty:"Honesty & faithfulness",trends:"Emerging trends",agents:"Agents in the wild"};
 const TIER={T1:"T1 · peer-reviewed / institutional",T2:"T2 · preprint",T3:"T3 · practitioner"};
-const S={reviews:{},study:[],opened:{},requests:{},intake:[],library:[],sessions:[],headlines:[],runs:[],takes:{},bench:[],meta:{},ready:false,db:null,reading:null};
+const S={skills:{},reviews:{},study:[],opened:{},requests:{},intake:[],library:[],sessions:[],headlines:[],runs:[],takes:{},bench:[],meta:{},ready:false,db:null,reading:null};
 try{S.shelf=localStorage.getItem("rh-shelf")||"main"}catch(e){S.shelf="main"}
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -254,11 +272,26 @@ function render(){
   const fn={today:vToday,library:vLibrary,sessions:vSessions,read:vRead}[v]||vToday;
   $("#view").innerHTML=fn();
   [["#heads",3],["#sesl",2]].forEach(([sel,n])=>{const hl=$(sel);if(hl&&hl.children.length>n){const h=[...hl.children].slice(0,n).reduce((a,c)=>a+c.offsetHeight,0);hl.style.maxHeight=h+"px";hl.classList.add("scrolly")}});
+  if(v==="know"){const k=decodeURIComponent(location.hash.split("/")[1]||"");const el=k&&document.getElementById("k-"+k);if(el)requestAnimationFrame(()=>el.scrollIntoView({block:"start"}))}
   if(v==="read"){const t=$("#track");if(t){const go=()=>syncCarousel(+t.dataset.idx);requestAnimationFrame(go);t.addEventListener("scroll",()=>{clearTimeout(S.st);S.st=setTimeout(()=>syncCarousel(),80)},{passive:true})}}
 }
 const loading=()=>S.ready?"":`<p class="empty">Connecting to your hub…</p>`;
 const newIntake=()=>S.intake.filter(d=>(d.status||"new")==="new").sort((a,b)=>(b.ofi_star?1:0)-(a.ofi_star?1:0));
-const readySessions=()=>S.sessions.filter(s=>(s.status||"ready")==="ready").sort((a,b)=>(a.created_at||"").localeCompare(b.created_at||""));
+// progress: complete (self or Ofi) > in progress (opened) > new
+const pState=s=>s.progress?.state==="complete"||s.status==="done"?"complete":s.progress?.state==="in_progress"||cardIdx(s.id)>0||S.reviews[s.id]?"in_progress":"new";
+const LV={1:"Not yet",2:"Recall",3:"Understand",4:"Apply"};
+const competent=c=>{const n=c.length;return n>0&&c.filter(x=>x.level>=3).length>=Math.ceil(n*.7)&&!c.some(x=>x.level<=1)};
+function progTag(s){const st=pState(s),p=s.progress||{};
+  const held=s.status==="needs_review"?`<span class="tag held">held · review with Ofi</span>`:"";
+  if(st==="complete")return `<span class="tag done">✓ Complete · ${p.completed_by==="ofi"?"Ofi-checked":"self-tagged"}</span>`;
+  if(st==="in_progress"){const c=p.card||cardIdx(s.id)+1,t=p.total;return `<span class="tag prog">In progress${t?` · card ${c}/${t}`:""}</span>${held}`}
+  return held}
+const thumbIc=id=>{const t=S.takes[id]?.thumb;return t==="up"?`<span class="thumb-ic" title="You liked it">👍</span>`:t==="down"?`<span class="thumb-ic" title="Not for you">👎</span>`:""};
+function lvlBar(sid){const k=S.skills[sid];if(!k||!(k.concepts||[]).length)return "";const c=k.concepts,n3=c.filter(x=>x.level>=3).length;
+  return `<a class="lvlbar" href="#know/${encodeURIComponent(sid)}" title="${n3} of ${c.length} concepts at Understand or above · tap for details">${c.map(x=>`<i class="l${+x.level||1}"></i>`).join("")}<span class="mono">${n3}/${c.length}</span></a>`}
+const readySessions=()=>S.sessions.filter(s=>(s.status||"ready")==="ready"&&pState(s)==="new").sort((a,b)=>(a.created_at||"").localeCompare(b.created_at||""));
+const progSessions=()=>S.sessions.filter(s=>pState(s)==="in_progress").sort((a,b)=>(b.progress?.at||b.progress?.started_at||"").localeCompare(a.progress?.at||a.progress?.started_at||""));
+const doneSessions=()=>S.sessions.filter(s=>pState(s)==="complete").sort((a,b)=>(b.progress?.completed_at||b.completed_at||"").localeCompare(a.progress?.completed_at||a.completed_at||""));
 const lastRun=()=>[...S.runs].sort((a,b)=>(b.at||"").localeCompare(a.at||""))[0];
 
 function vToday(){
@@ -270,13 +303,13 @@ function vToday(){
   <section class="greet"><div><h1 class="hello">${greeting()}, Raf! ✨</h1><p class="sub">${new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})}</p></div>
     <p class="mono" style="color:var(--muted)">${S.meta.generated_at?`updated · ${fmtDate(S.meta.generated_at)}`:""}</p></section>
   <section class="tiles">
-    <a class="tile glass deep" href="#sessions"><span class="ttl">Learning Sessions</span><span class="num">${readySessions().length}</span><span class="lbl">ready to start</span></a>
+    <a class="tile glass deep" href="#sessions"><span class="ttl">Learning Sessions</span><span class="num">${readySessions().length}</span><span class="lbl">ready to start${progSessions().length?` · ${progSessions().length} in progress`:""}</span></a>
     <a class="tile glass deep" href="#library"><span class="ttl">Library</span><span class="num">${S.library.length}</span><span class="lbl">papers · ${fund} fundamentals</span></a>
     <a class="tile glass deep" href="#library"><span class="ttl">Fundamentals</span><span class="num">${fund}</span><span class="lbl">the classics</span></a>
     <div class="tile glass deep"><span class="ttl">Headlines</span><span class="num">${S.headlines.length}</span><span class="lbl">latest finds</span></div>
   </section>
   <section class="grid">
-    ${(()=>{const built=[...readySessions(),...S.sessions.filter(s=>s.status==="needs_review")],nd=S.sessions.filter(s=>s.status==="done").length;
+    ${(()=>{const built=[...progSessions(),...readySessions(),...S.sessions.filter(s=>s.status==="needs_review"&&pState(s)==="new")],nd=doneSessions().length;
       return `<article class="card glass span8 upnext"><div class="card-head"><span class="eyebrow">Learning Sessions · built for you</span><a class="mono" href="#sessions">${built.length} open${nd?` · ${nd} done`:""} · all →</a></div>
       ${built.length?`<div class="list heads" id="sesl">${built.map(sesRow).join("")}</div>${built.length>2?`<p class="mono more-hint">+${built.length-2} more · scroll ↓</p>`:""}`:`<p class="empty">No sessions built yet. Tap "Build me a session" on any paper in the Library.</p>`}</article>`})()}
     <article class="card glass span4">
@@ -292,7 +325,7 @@ function vToday(){
   </section>`;
 }
 
-const sesRow=s=>`<div class="item lrow"><div><a href="#read/${encodeURIComponent(s.id)}"><b>${esc(s.title)}</b></a><span class="meta">${esc(s.kind==="quick-hit"?"Quick hit":"Walkthrough")} · ${esc(s.minutes||"?")} min${S.reviews[s.id]?.status==="pending"?" · 💬 review with Ofi pending":""}</span><div class="tags">${s.status==="needs_review"?`<span class="tag held">held · review with Ofi</span>`:""}${tierTag(s.tier)}${topicTags(s.topics)}</div></div><div class="act"><a class="btn ${s.status==="needs_review"?"ghost":""}" href="#read/${encodeURIComponent(s.id)}">${cardIdx(s.id)?"Resume":"Start"}</a></div></div>`;
+const sesRow=s=>`<div class="item lrow"><div><a href="#read/${encodeURIComponent(s.id)}"><b>${esc(s.title)}</b></a><span class="meta">${esc(s.kind==="quick-hit"?"Quick hit":"Walkthrough")} · ${esc(s.minutes||"?")} min${S.reviews[s.id]?.status==="pending"?" · 💬 review with Ofi pending":""}</span><div class="tags">${progTag(s)}${tierTag(s.tier)}${topicTags(s.topics)}</div></div><div class="act"><a class="btn ${s.status==="needs_review"&&pState(s)==="new"?"ghost":""}" href="#read/${encodeURIComponent(s.id)}">${pState(s)==="in_progress"?"Resume":"Start"}</a></div></div>`;
 function paperCard(d,actions){
   const m=d.method||{};
   return `<article class="paper glass${d.ofi_star?" starred":""}">
@@ -328,22 +361,36 @@ function vLibrary(){
   :`<section class="card glass"><div class="card-head"><h2>Fundamentals</h2><span class="mono">${fund.length} · the classics</span></div>
     ${fund.length?`<div class="list">${fund.map(libRow).join("")}</div>`:`<p class="empty">Nothing here${f.q||f.topic||f.tier||f.year?" matches the filters":" yet"}.</p>`}</section>`}`;
 }
-const libRow=p=>`<div class="item lrow"><div><a href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener"><b>${esc(p.title)}</b></a><span class="meta">${esc([p.authors,p.org,p.year].filter(Boolean).join(" · "))}</span>${p.why?`<span class="meta">${esc(p.why)}</span>`:""}<div class="tags">${tierTag(p.tier)}${topicTags(p.topics)}</div></div><div class="act">${sessionSel(p)}</div></div>`;
+const libRow=p=>`<div class="item lrow"><div><a href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener"><b>${esc(p.title)}</b></a><span class="meta">${esc([p.authors,p.org,p.year].filter(Boolean).join(" · "))}</span>${p.why?`<span class="meta">${esc(p.why)}</span>`:""}<div class="tags">${(()=>{const ses=S.sessions.find(x=>x.paper_id===p.id);return ses?progTag(ses)+thumbIc(ses.id)+lvlBar(ses.id):""})()}${tierTag(p.tier)}${topicTags(p.topics)}</div></div><div class="act">${sessionSel(p)}</div></div>`;
 function sessionSel(p){
   const ses=S.sessions.find(x=>x.paper_id===p.id);
   return ses?`<a class="btn ghost" href="#read/${encodeURIComponent(ses.id)}">Open session</a>`:`<span class="mono" style="color:var(--muted);text-align:right">no session yet</span>`;
 }
 
 function vSessions(){
-  const held=S.sessions.filter(s=>s.status==="needs_review");
-  const ready=readySessions(), done=S.sessions.filter(s=>s.status==="done").sort((a,b)=>(b.completed_at||"").localeCompare(a.completed_at||""));
-  const row=s=>`<div class="item"><div class="row" style="justify-content:space-between"><div style="min-width:0;display:grid;gap:2px"><a href="#read/${encodeURIComponent(s.id)}"><b>${esc(s.title)}</b></a><span class="meta">${esc(s.kind==="quick-hit"?"Quick hit":"Walkthrough")} · ${esc(s.minutes||"?")} min${s.status==="done"?` · done ${fmtDate(s.completed_at)}`:""}${S.reviews[s.id]?.status==="pending"?" · 💬 review with Ofi pending":""}</span></div><div class="tags">${tierTag(s.tier)}${topicTags(s.topics)}</div></div></div>`;
+  const held=S.sessions.filter(s=>s.status==="needs_review"&&pState(s)==="new");
+  const ready=readySessions(), done=doneSessions(), prog=progSessions();
+  const row=s=>`<div class="item"><div class="row" style="justify-content:space-between"><div style="min-width:0;display:grid;gap:2px"><a href="#read/${encodeURIComponent(s.id)}"><b>${esc(s.title)}</b></a><span class="meta">${esc(s.kind==="quick-hit"?"Quick hit":"Walkthrough")} · ${esc(s.minutes||"?")} min${pState(s)==="complete"?` · done ${fmtDate(s.progress?.completed_at||s.completed_at)}`:""}${S.reviews[s.id]?.status==="pending"?` · 💬 ${S.reviews[s.id]?.mode==="quiz"?"quiz":"review"} with Ofi pending`:""}</span></div><div class="tags">${progTag(s)}${thumbIc(s.id)}${lvlBar(s.id)}${tierTag(s.tier)}${topicTags(s.topics)}</div></div></div>`;
   return `${loading()}<section class="greet"><div><h1>Learning Sessions</h1><p class="sub">Walkthroughs are 10 to 15 minutes. Quick hits take about 2.</p></div></section>
+  ${prog.length?`<section class="card glass upnext"><div class="card-head"><h2>In progress</h2><span class="mono">${prog.length}</span></div><div class="list">${prog.map(row).join("")}</div></section>`:""}
   <section class="card glass"><div class="card-head"><h2>Ready</h2><span class="mono">${ready.length}</span></div>${ready.length?`<div class="list">${ready.map(row).join("")}</div>`:`<p class="empty">No sessions waiting.</p>`}</section>
   ${held.length?`<section class="card glass"><div class="card-head"><h2>Held for review</h2><span class="mono">${held.length}</span></div><div class="list">${held.map(row).join("")}</div></section>`:""}
-  <section class="card glass"><div class="card-head"><h2>Done</h2><span class="mono">${done.length}</span></div>${done.length?`<div class="list">${done.map(row).join("")}</div>`:`<p class="empty">Finished sessions and your takes collect here.</p>`}</section>`;
+  <section class="card glass"><div class="card-head"><h2>Complete</h2><span class="mono">${done.length}</span></div>${done.length?`<div class="list">${done.map(row).join("")}</div>`:`<p class="empty">Finished sessions and your takes collect here.</p>`}</section>`;
 }
 
+function vKnow(){
+  const rated=Object.values(S.skills).filter(k=>(k.concepts||[]).length).sort((a,b)=>(b.rated_at||"").localeCompare(a.rated_at||""));
+  const all=rated.flatMap(k=>k.concepts.map(c=>({...c,sid:k.session_id||k.id,title:k.title})));
+  const revisit=all.filter(c=>c.level<=2), strong=all.filter(c=>c.level>=3).length;
+  const cRow=c=>`<div class="concept"><div class="row"><span class="lv l${+c.level||1}">${+c.level||1} · ${esc(LV[c.level]||"?")}</span><span class="mono" style="color:var(--muted)">${fmtDate(c.rated_at)}</span></div><p>${esc(c.concept)}</p>${c.evidence?`<p class="meta">Receipt: <q>${esc(c.evidence)}</q></p>`:""}</div>`;
+  return `${loading()}<section class="greet"><div><h1>What I know</h1><p class="sub">Concepts Ofi has rated after a Review or Quiz w Ofi. Levels: 1 Not yet · 2 Recall · 3 Understand · 4 Apply. Every rating carries a receipt in your words.</p></div><p class="mono" style="color:var(--muted);text-align:right">${strong} of ${all.length} at Understand+<br>${rated.length} paper${rated.length===1?"":"s"}</p></section>
+  ${revisit.length?`<section class="card glass"><div class="card-head"><h2>To revisit</h2><span class="mono">${revisit.length}</span></div><div class="list">${revisit.map(c=>`<div class="concept"><a href="#know/${encodeURIComponent(c.sid)}" class="mono">${esc(c.title)}</a>${cRow(c).replace(/^<div class="concept">|<\/div>$/g,"")}</div>`).join("")}</div></section>`:""}
+  ${rated.length?rated.map(k=>{const sid=k.session_id||k.id,ses=S.sessions.find(x=>x.id===sid),ok=k.competent??competent(k.concepts);
+    return `<section class="card glass" id="k-${esc(sid)}"><div class="card-head"><h2>${esc(k.title||ses?.title||sid)}</h2><span class="row">${ok?`<span class="tag done">Competent</span>`:`<span class="tag prog">Not there yet</span>`}${lvlBar(sid)}</span></div>
+      <p class="meta">${esc(k.mode==="quiz"?"Quiz w Ofi":"Review w Ofi")} · ${fmtDate(k.rated_at)}${ses?` · <a href="#read/${encodeURIComponent(sid)}">open session</a>`:""}</p>
+      <div class="list">${k.concepts.map(cRow).join("")}</div></section>`}).join("")
+  :`<div class="card glass"><p class="empty">Nothing rated yet. Finish a session, then tap "Quiz me w Ofi" or "Review w Ofi" on its last card. Ofi rates each Must hold concept and saves the receipts here.</p></div>`}`;
+}
 function buildCards(s){
   const cards=[]; const secs=s.sections||[];
   const chunk=body=>{const paras=String(body||"").split(/\n\n+/).filter(Boolean),out=[];let cur=[],len=0;
@@ -364,7 +411,8 @@ function vRead(){
   if(!s)return S.ready?`<div class="card glass"><p class="empty">That session isn't here. <a href="#sessions">Back to sessions</a>.</p></div>`:loading();
   const take=S.takeDraft?.[id]??S.takes[id]?.text??"";
   const cards=buildCards(s), n=cards.length, nsec=(s.sections||[]).length;
-  const idx=Math.min(cardIdx(id),n-1);
+  const idx=Math.min(Math.max(cardIdx(id),(s.progress?.card||1)-1),n-1);
+  if(pState(s)==="new"||!s.progress)saveProgress(id,idx+1,n);
   const card=(c,i)=>{
     const head=`<div class="ccount"><span class="eyebrow">${c.kind==="probe"?"🧪 Probe · "+esc(c.h):c.kind==="end"?"Wrap-up":esc(c.h)}${c.part?` · ${c.part}`:""}</span><span class="mono">${i+1} / ${n}</span></div>`;
     if(c.kind==="text")return `<div class="slide glass" role="group" aria-roledescription="card" aria-label="Card ${i+1} of ${n}">${head}${c.ps.map(p=>`<p>${esc(p)}</p>`).join("")}${c.hold?`<p class="hold"><span class="eyebrow">Must hold</span>${esc(c.hold)}</p>`:""}</div>`;
@@ -378,6 +426,7 @@ function vRead(){
   return `<article class="reader-wrap">
     <div class="reader-top"><a href="#sessions" class="mono">← Learning Sessions</a><div class="tags">${tierTag(s.tier)}${topicTags(s.topics)}<span class="tag">${esc(s.kind==="quick-hit"?"Quick hit":"Walkthrough")} · ${esc(s.minutes||"?")} min</span></div></div>
     <h1>${esc(s.title)}</h1>${s.byline?`<p class="meta">${esc(s.byline)}</p>`:""}
+    <div class="tags">${progTag(s)}${lvlBar(id)}</div>
     ${s.status==="needs_review"?`<p class="tag t3" style="white-space:normal;justify-self:start">Held for review: the fact-check flagged more than 2 claims. Raf and Ofi are still checking it, so read it with care.</p>`:""}
     <div class="progress" aria-hidden="true">${cards.map((c,i)=>`<span class="pip ${c.kind}" data-i="${i}"></span>`).join("")}</div>
     <div class="progress-meta"><span id="cur-sec" class="mono"></span><span id="cur-left" class="mono"></span></div>
@@ -386,13 +435,19 @@ function vRead(){
     <div class="carousel-nav"><button class="btn ghost" data-act="prev" aria-label="Previous card">← Back</button><button class="btn" data-act="next" aria-label="Next card">Next →</button></div>
   </article>`;
 }
+function saveProgress(id,card,total){
+  const s=S.sessions.find(x=>x.id===id);if(!s||!S.db||pState(s)==="complete")return;
+  const p=s.progress||{};if(p.state==="in_progress"&&p.card===card&&p.total===total)return;
+  s.progress={...p,state:"in_progress",started_at:p.started_at||new Date().toISOString(),card,total,at:new Date().toISOString()};
+  clearTimeout(S.pt);S.pt=setTimeout(()=>S.db.doc("sessions/"+id).update({progress:s.progress}).catch(()=>{}),1200);
+}
 function syncCarousel(scrollTo){
   const t=$("#track");if(!t)return;
   const n=+t.dataset.n, id=t.dataset.id;
   let i=scrollTo!=null?scrollTo:Math.round(t.scrollLeft/Math.max(1,t.clientWidth));
   i=Math.max(0,Math.min(n-1,i));
   if(scrollTo!=null)t.scrollTo({left:i*t.clientWidth,behavior:scrollTo===+t.dataset.idx?"instant":"smooth"});
-  t.dataset.idx=i; setCardIdx(id,i);
+  t.dataset.idx=i; setCardIdx(id,i); saveProgress(id,i+1,n);
   document.querySelectorAll(".pip").forEach((p,k)=>{p.classList.toggle("on",k<=i);p.classList.toggle("cur",k===i)});
   const slides=t.children, h=slides[i]?.querySelector(".eyebrow")?.textContent||"";
   $("#cur-sec").textContent=h; const left=n-1-i; $("#cur-left").textContent=left?`${left} card${left>1?"s":""} left`:"last card";
@@ -415,9 +470,9 @@ document.addEventListener("click",async e=>{
       if(act==="keep"){await S.db.doc("library_index/"+id).set({title:d.title||"",authors:d.authors||"",org:d.org||"",year:d.year||(d.pub_date?String(d.pub_date).slice(0,4):""),url:d.url||"",tier:d.tier||"",topics:d.topics||[],is_fundamental:!!d.is_fundamental,why:d.why_fits||d.what||"",kept_at:new Date().toISOString(),from_intake:true})}
       await S.db.doc("intake/"+id).update({status:act==="keep"?"kept":"tossed",decided_at:new Date().toISOString()});
       toast(act==="keep"?(d.is_fundamental?"Shelved as a fundamental.":"Kept on the main shelf.")+" Tap Build me a session in the Library when you want one.":"Tossed. It won't come back.")}
-    if(act==="review"){const ses=S.sessions.find(x=>x.id===id);const t=$("#track");const i=t?+t.dataset.idx:cardIdx(id);const n=t?+t.dataset.n:buildCards(ses).length;
-      const line=`/review-with-ofi ${id} ${i+1}/${n}`;
-      await S.db.doc("reviews/"+id).set({session_id:id,title:ses?.title||"",card:i+1,total:n,probes_opened:[...(S.opened[id]||[])],take_draft:($("#take")?.value??S.takeDraft?.[id]??S.takes[id]?.text??""),bottom_line_draft:($("#bline")?.value??S.blineDraft?.[id]??S.takes[id]?.bottom_line??""),status:"pending",requested_at:new Date().toISOString()});
+    if(act==="review"||act==="quiz"){const ses=S.sessions.find(x=>x.id===id);const t=$("#track");const i=t?+t.dataset.idx:cardIdx(id);const n=t?+t.dataset.n:buildCards(ses).length;
+      const line=act==="quiz"?`/review-with-ofi ${id} quiz`:`/review-with-ofi ${id} ${i+1}/${n}`;
+      await S.db.doc("reviews/"+id).set({mode:act==="quiz"?"quiz":"review",session_id:id,title:ses?.title||"",card:i+1,total:n,probes_opened:[...(S.opened[id]||[])],take_draft:($("#take")?.value??S.takeDraft?.[id]??S.takes[id]?.text??""),bottom_line_draft:($("#bline")?.value??S.blineDraft?.[id]??S.takes[id]?.bottom_line??""),status:"pending",requested_at:new Date().toISOString()});
       const h=$("#handoff");h.hidden=false;h.innerHTML=`<p class="meta">Progress saved. Paste this to Ofi in Claude:</p><code id="handoff-text">${esc(line)}</code><button class="btn" data-act="copyhandoff">Copy</button>`;
       try{await navigator.clipboard.writeText(line);toast("Saved and copied. Paste it to Ofi in Claude.")}catch(e){toast("Progress saved. Tap Copy, then paste it to Ofi.")}
       b.disabled=false}
@@ -425,8 +480,17 @@ document.addEventListener("click",async e=>{
       if(q){await S.db.doc("requests/"+id).update({status:"cancelled",cancelled_at:new Date().toISOString()});toast("Removed from the queue.")}
       else{await S.db.doc("requests/"+id).set({paper_id:id,title:p?.title||"",url:p?.url||"",kind:"walkthrough",status:"queued",requested_at:new Date().toISOString()});toast("Queued. Ofi builds it next run or next chat.")}
       b.disabled=false}
-    if(act==="take"){const text=$("#take").value,bottom_line=($("#bline")?.value||"").trim();await S.db.doc("takes/"+id).set({session_id:id,text,bottom_line,at:new Date().toISOString()});toast("Bottom line and take saved.")}
-    if(act==="done"){await S.db.doc("sessions/"+id).update({status:"done",completed_at:new Date().toISOString()});toast("Marked done. 🎉")}
+    if(act==="take"){const text=$("#take").value,bottom_line=($("#bline")?.value||"").trim();const prev=S.takes[id]||{};await S.db.doc("takes/"+id).set({session_id:id,text,bottom_line,thumb:prev.thumb??null,at:new Date().toISOString()});toast("Bottom line and take saved.")}
+    if(act==="thumb"){const prev=S.takes[id]||{},v=prev.thumb===b.dataset.v?null:b.dataset.v;
+      const doc={session_id:id,text:$("#take")?.value??prev.text??"",bottom_line:($("#bline")?.value??prev.bottom_line??"").trim(),thumb:v,at:new Date().toISOString()};
+      await S.db.doc("takes/"+id).set(doc);S.takes[id]={id,...doc};
+      document.querySelectorAll('[data-act="thumb"]').forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===v)));
+      toast(v==="up"?"👍 Noted.":v==="down"?"👎 Noted.":"Rating cleared.");b.disabled=false}
+    if(act==="done"){const s=S.sessions.find(x=>x.id===id),now=new Date().toISOString();
+      const progress={...(s?.progress||{}),state:"complete",completed_at:now,completed_by:"self"};
+      await S.db.doc("sessions/"+id).update({progress,completed_at:now,...(s?.status==="ready"||!s?.status?{status:"done"}:{})});
+      if(s){s.progress=progress;if(s.status==="ready"||!s.status)s.status="done"}
+      toast("Marked complete. 🎉");render()}
   }catch(err){toast("That didn't save: "+(err?.message||err?.code||"try again."));b.disabled=false}
 });
 document.addEventListener("toggle",e=>{const d=e.target;if(!(d instanceof HTMLDetailsElement)||!d.open)return;const sl=d.closest(".slide.probe");const t=$("#track");if(!sl||!t)return;const i=[...t.children].indexOf(sl);const id=t.dataset.id;(S.opened[id]=S.opened[id]||new Set()).add(i+1)},true);
