@@ -62,5 +62,53 @@
   "tier": "T2",
   "date": "2026-10-03",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261012-authority-bias",
+  "text": "Authority bias: one 'verified source' note flips 45-88% of correct answers in 7 of 8 models (NeurIPS 2026)",
+  "url": "https://arxiv.org/abs/2609.37616",
+  "tier": "T1",
+  "date": "2026-10-12",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261015-claim-framing-sycophancy",
+  "text": "Sycophancy depends on how a claim is framed: confidence and attribution matter most, across 14 models",
+  "url": "https://arxiv.org/abs/2610.18159",
+  "tier": "T2",
+  "date": "2026-10-13",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261015-pushback-haystack",
+  "text": "Models push back on user errors indirectly, mixing in affirmation, which may leave misconceptions uncorrected",
+  "url": "https://arxiv.org/abs/2610.17703",
+  "tier": "T2",
+  "date": "2026-10-13",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261019-big-big-sycobench",
+  "text": "New benchmark: models cave to invalid arguments 0.2% to 95% of the time depending on the model",
+  "url": "https://arxiv.org/abs/2610.15634",
+  "tier": "T2",
+  "date": "2026-10-11",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261019-narrative-sycophancy",
+  "text": "Sycophancy depends on how a user justifies a view: causal framing raises agreement, personal stories lower it",
+  "url": "https://arxiv.org/abs/2610.23525",
+  "tier": "T2",
+  "date": "2026-10-16",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261019-one-circuit-biases",
+  "text": "Cue-driven biases share one pretrained attention circuit that post-training strengthens",
+  "url": "https://arxiv.org/abs/2610.22937",
+  "tier": "T2",
+  "date": "2026-10-16",
+  "benchmark_flag": false
  }
 ]

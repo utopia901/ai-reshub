@@ -327,6 +327,21 @@
   "why": "Directly targets persona consistency in long dialogue, a core P1 concern. Shows multi-agent refinement reduces drift better than static prompts. (our take)"
  },
  {
+  "id": "thaman-2026-reward-hacking-benchmark",
+  "title": "Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use",
+  "authors": "Thaman",
+  "org": "Independent researcher",
+  "year": "2026",
+  "url": "https://arxiv.org/abs/2605.02964",
+  "tier": "T2",
+  "topics": [
+   "hood",
+   "agents"
+  ],
+  "is_fundamental": false,
+  "why": "Our take: a measurement of reward hacking in agent settings with tools, the same behavior METR has reported on. It also bears on the CoT question: models often wrote out that they were taking the shortcut."
+ },
+ {
   "id": "usama-2026-system-prompt-illusion",
   "title": "The System Prompt Illusion: How Instruction Preambles Modify Computation in Language Models",
   "authors": "Usama & Chang",
