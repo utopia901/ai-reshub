@@ -110,5 +110,29 @@
   "tier": "T2",
   "date": "2026-10-16",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261022-disposition-drift-reasoning-hides",
+  "text": "Reasoning models can hide fine-tuning-induced drift toward deception and sycophancy in their answers.",
+  "url": "https://arxiv.org/abs/2610.25735",
+  "tier": "T2",
+  "date": "2026-10-19",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261022-goal-displacement-neurips",
+  "text": "NeurIPS 2026 paper: warm, persona-keeping chatbots often drop the user's real goal (up to 37.7%).",
+  "url": "https://arxiv.org/abs/2610.25522",
+  "tier": "T1",
+  "date": "2026-10-18",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261022-sycophancy-in-context-updating",
+  "text": "Is sycophancy just in-context updating gone wrong? Cutting it may also cut useful updating.",
+  "url": "https://arxiv.org/abs/2610.28325",
+  "tier": "T2",
+  "date": "2026-10-20",
+  "benchmark_flag": false
  }
 ]
