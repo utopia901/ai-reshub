@@ -134,5 +134,21 @@
   "tier": "T2",
   "date": "2026-10-20",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261026-hint-source-dog-professor",
+  "text": "Models follow a hint about as much from a dog as from a professor, even when warned it is wrong",
+  "url": "https://arxiv.org/abs/2610.32055",
+  "tier": "T2",
+  "date": "2026-10-23",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261026-system-prompt-swap-violations",
+  "text": "Swapping an ethical system prompt for a neutral one raised tool-call violations from 2.76% to 13.64%",
+  "url": "https://arxiv.org/abs/2610.15134",
+  "tier": "T2",
+  "date": "2026-10-10",
+  "benchmark_flag": false
  }
 ]
