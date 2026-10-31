@@ -150,5 +150,21 @@
   "tier": "T2",
   "date": "2026-10-10",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261029-persona-vs-native-language",
+  "text": "EMNLP 2026: native-speaker personas give less actionable advice than generate-then-translate",
+  "url": "https://aclanthology.org/2026.emnlp-main.515/",
+  "tier": "T1",
+  "date": "2026-10",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261029-sycophancy-human-deference",
+  "text": "Human study: confident chatbots' false claims absorbed, quiz scores fell 7.4→2.9 as falsehoods rose",
+  "url": "https://arxiv.org/abs/2610.31579",
+  "tier": "T2",
+  "date": "2026-10-22",
+  "benchmark_flag": false
  }
 ]
