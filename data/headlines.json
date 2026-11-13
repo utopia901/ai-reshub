@@ -190,5 +190,29 @@
   "tier": "T2",
   "date": "2026-11-02",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261106-bmms-model-spec-compliance",
+  "text": "Workshop paper: GPT-4o fails 70.7% of hard constraints in OpenAI's own Model Spec; two Claude models 0% and 9.1%",
+  "url": "https://arxiv.org/abs/2611.09147",
+  "tier": "T2",
+  "date": "2026-11-06",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261112-pushback-reply-length",
+  "text": "Pushback can make models cave or self-correct: reply length decides which wins",
+  "url": "https://arxiv.org/abs/2611.11035",
+  "tier": "T2",
+  "date": "2026-11-08",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261112-sysprompts-shift-refusal",
+  "text": "System prompts mostly shift willingness to refuse, not ability to tell safe from unsafe (13 models)",
+  "url": "https://arxiv.org/abs/2611.11074",
+  "tier": "T2",
+  "date": "2026-11-08",
+  "benchmark_flag": false
  }
 ]
