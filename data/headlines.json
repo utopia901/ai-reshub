@@ -200,6 +200,22 @@
   "benchmark_flag": false
  },
  {
+  "id": "20261111-role-vectors-fade",
+  "text": "Role vectors steer LLM roles only modestly and don't stop role fade over 30 turns",
+  "url": "https://arxiv.org/abs/2611.15989",
+  "tier": "T2",
+  "date": "2026-11-11",
+  "benchmark_flag": false
+ },
+ {
+  "id": "20261112-accuracy-approval-gap",
+  "text": "Users rate accurate AI persona less satisfying than sycophantic ones in two studies",
+  "url": "https://arxiv.org/abs/2611.16722",
+  "tier": "T2",
+  "date": "2026-11-12",
+  "benchmark_flag": false
+ },
+ {
   "id": "20261112-pushback-reply-length",
   "text": "Pushback can make models cave or self-correct: reply length decides which wins",
   "url": "https://arxiv.org/abs/2611.11035",
