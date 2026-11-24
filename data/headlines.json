@@ -230,5 +230,13 @@
   "tier": "T2",
   "date": "2026-11-08",
   "benchmark_flag": false
+ },
+ {
+  "id": "20261119-bmms-model-spec-compliance",
+  "text": "New eval finds GPT-4o fails 70.7% of hard constraints in OpenAI's own Model Spec; two Claude models fail 0-9%",
+  "url": "https://arxiv.org/abs/2611.09147",
+  "tier": "T2",
+  "date": "2026-11-06",
+  "benchmark_flag": false
  }
 ]
